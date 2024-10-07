@@ -1,7 +1,7 @@
 variable "region" {
   description = "The AWS region where resources will be created"
   type        = string
-  default     = "us-west-1"
+  default= "us-west-1"
 }
 
 variable "vpc_cidr_base" {
