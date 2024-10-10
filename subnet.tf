@@ -1,8 +1,6 @@
 locals {
-  # Select a maximum of 3 availability zones or fewer if less are available
   selected_zones = slice(data.aws_availability_zones.available.names, 0, min(length(data.aws_availability_zones.available.names), var.max_availability_zones))
 
-  # Public and private subnet CIDR ranges for each VPC and zone
   public_subnet_cidrs = [
     for vpc_cidr in local.vpc_cidrs : [
       for j in range(length(local.selected_zones)) : cidrsubnet(vpc_cidr, 8, j)
@@ -27,8 +25,6 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-
-# Create one private subnet per availability zone in each VPC
 resource "aws_subnet" "private_subnet" {
   count             = var.no_of_vpcs * length(local.selected_zones)
   vpc_id            = aws_vpc.my_vpc[floor(count.index / length(local.selected_zones))].id
