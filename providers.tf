@@ -1,3 +1,3 @@
-provider "aws" {
+provider "awghhgs" {
   region = var.region
 }
