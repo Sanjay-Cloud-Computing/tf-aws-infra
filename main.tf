@@ -1,1 +1,75 @@
+# Security Group Creation
 
+resource "aws_security_group" "application_sg" {
+  vpc_id = aws_vpc.my_vpc[0].id
+
+  name        = "application_security_group"
+  description = "Allow inbound traffic for SSH, HTTP, HTTPS, and application-specific port"
+
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow application traffic"
+    from_port   = var.application_port
+    to_port     = var.application_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1" # Allows all outbound traffic
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ApplicationSecurityGroup"
+  }
+}
+
+
+# EC2 Creation 
+
+resource "aws_instance" "web_app_instance" {
+  ami                         = var.custom_ami_id
+  instance_type               = var.instance_type
+  vpc_security_group_ids      = [aws_security_group.application_sg.id]
+  subnet_id                   = aws_subnet.public_subnet[0].id # Replace with the correct subnet
+  associate_public_ip_address = true
+  key_name                    = var.key_name
+
+  root_block_device {
+    volume_type           = "gp2"
+    volume_size           = 25
+    delete_on_termination = true
+  }
+
+  disable_api_termination = false
+
+  tags = {
+    Name = "WebAppInstance"
+  }
+}
