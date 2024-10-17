@@ -34,9 +34,29 @@ variable "private_subnet_per_vpc" {
   # default     = 1
 }
 
+variable "application_port" {
+  description = "The port on which the application runs"
+  type        = number
+}
+
 variable "vpc_name" {
   description = "Base name for the VPCs to be created"
   type        = string
   # default     = "MyVPC"
 }
 
+variable "custom_ami_id" {
+  description = "Amazon Machine Image (AMI) to use for the EC2 instance"
+  type        = string
+}
+
+variable "instance_type" {
+  description = "The EC2 instance type"
+  type        = string
+}
+
+variable "key_name" {
+  description = "The key pair name for SSH access"
+  type        = string
+  default     = null
+}
