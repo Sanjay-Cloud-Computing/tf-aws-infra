@@ -69,6 +69,21 @@ resource "aws_instance" "web_app_instance" {
 
   disable_api_termination = false
 
+  user_data = <<-EOF
+              #!/bin/bash
+              # Write environment variables to /etc/environment
+              echo "DB_USERNAME='csye6225'" >> /etc/environment
+              echo "DB_PASSWORD='${var.db_password}'" >> /etc/environment
+              echo "DB_HOST='${aws_db_instance.rds_instance.address}'" >> /etc/environment
+              echo "DB_PORT='3306'" >> /etc/environment
+              echo "DB_NAME='test'" >> /etc/environment
+
+              # Source the environment variables
+              source /etc/environment
+
+              sudo systemctl start app.service
+              EOF
+
   tags = {
     Name = "WebAppInstance"
   }
