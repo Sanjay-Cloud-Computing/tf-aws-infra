@@ -60,3 +60,15 @@ variable "key_name" {
   type        = string
   default     = null
 }
+
+variable "db_port" {
+  description = "Port for the database (3306 for MariaDB)"
+  type        = number
+  default     = 3306
+}
+
+variable "db_password" {
+  description = "Password for the master user of the RDS instance"
+  type        = string
+  sensitive   = true
+}
