@@ -1,5 +1,4 @@
 # Security Group Creation
-
 resource "aws_security_group" "application_sg" {
   vpc_id = aws_vpc.my_vpc[0].id
 
@@ -57,7 +56,7 @@ resource "aws_instance" "web_app_instance" {
   ami                         = var.custom_ami_id
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.application_sg.id]
-  subnet_id                   = aws_subnet.public_subnet[0].id # Replace with the correct subnet
+  subnet_id                   = aws_subnet.public_subnet[0].id
   associate_public_ip_address = true
   key_name                    = var.key_name
 
