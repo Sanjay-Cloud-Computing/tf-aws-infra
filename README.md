@@ -52,10 +52,16 @@ Create a file named `terraform.tfvars` in the root of your project directory, an
 region                 = "us-east-1"
 vpc_cidr_base          = "10.0.0.0/16"
 no_of_vpcs             = "1"
-max_availability_zones = "3"
+max_availability_zones = "2"
 public_subnet_per_vpc  = "1"
 private_subnet_per_vpc = "1"
 vpc_name               = "MyVpc"
+custom_ami_id          = "ami-09caa919c5a7284ef"
+application_port       = "5000"
+instance_type          = "t2.micro"
+key_name               = "Sanjay-Mac"
+db_password            = "<enter-password>"
+
 ```
 
 ## Step 4: Initialize Terraform
