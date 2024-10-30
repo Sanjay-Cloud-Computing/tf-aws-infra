@@ -50,8 +50,6 @@ resource "aws_security_group" "application_sg" {
 }
 
 
-# EC2 Creation 
-
 resource "aws_instance" "web_app_instance" {
   ami                         = var.custom_ami_id
   instance_type               = var.instance_type
@@ -59,6 +57,7 @@ resource "aws_instance" "web_app_instance" {
   subnet_id                   = aws_subnet.public_subnet[0].id
   associate_public_ip_address = true
   key_name                    = var.key_name
+  iam_instance_profile        = aws_iam_instance_profile.ec2_role_profile.name
 
   root_block_device {
     volume_type           = "gp2"
@@ -76,12 +75,20 @@ resource "aws_instance" "web_app_instance" {
               echo "DB_HOST='${aws_db_instance.rds_instance.address}'" >> /etc/environment
               echo "DB_PORT='3306'" >> /etc/environment
               echo "DB_NAME='test'" >> /etc/environment
+              echo "S3_BUCKET_NAME='${aws_s3_bucket.file_upload_bucket.bucket}'" >> /etc/environment
+
+              echo "SENDGRID_API_KEY='${var.email_key}'" >> /etc/environment
 
               # Source the environment variables
               source /etc/environment
 
+              # Start CloudWatch Agent (assuming it is installed in the AMI or Packer configuration)
+              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
+
+              # Start your application (modify to fit your application start command)
               sudo systemctl start app.service
               EOF
+
 
   tags = {
     Name = "WebAppInstance"
