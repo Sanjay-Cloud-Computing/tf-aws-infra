@@ -102,4 +102,4 @@ To delete the resources and avoid unnecessary charges, run:
 terraform destroy -var-file="terraform.tfvars"
 ```
 
-Type `yes` to confirm and start the deletion process.
+Type `yes` to confirm and start the deletion process
