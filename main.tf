@@ -77,6 +77,8 @@ resource "aws_instance" "web_app_instance" {
               echo "DB_NAME='test'" >> /etc/environment
               echo "S3_BUCKET_NAME='${aws_s3_bucket.file_upload_bucket.bucket}'" >> /etc/environment
 
+              echo "ROUTE_NAME='${var.route_name}'" >> /etc/environment
+
               echo "SENDGRID_API_KEY='${var.email_key}'" >> /etc/environment
 
               # Source the environment variables
