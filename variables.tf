@@ -72,3 +72,14 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "route_name" {
+  description = "Route Name"
+  type        = string
+}
+
+variable "email_key" {
+  type        = string
+  description = "api key"
+
+}
