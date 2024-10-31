@@ -87,6 +87,8 @@ resource "aws_instance" "web_app_instance" {
               # Start your application (modify to fit your application start command)
               sudo systemctl start app.service
 
+              sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent-config.json -s
+
               # Start CloudWatch Agent
               /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
 
