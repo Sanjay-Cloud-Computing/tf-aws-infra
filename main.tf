@@ -84,11 +84,12 @@ resource "aws_instance" "web_app_instance" {
               # Source the environment variables
               source /etc/environment
 
-              # Start CloudWatch Agent (assuming it is installed in the AMI or Packer configuration)
-              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
-
               # Start your application (modify to fit your application start command)
               sudo systemctl start app.service
+
+              # Start CloudWatch Agent
+              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
+
               EOF
 
 
