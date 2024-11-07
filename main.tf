@@ -14,27 +14,11 @@ resource "aws_security_group" "application_sg" {
   }
 
   ingress {
-    description = "Allow HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow application traffic"
-    from_port   = var.application_port
-    to_port     = var.application_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "Allow application traffic from load balancer"
+    from_port       = var.application_port
+    to_port         = var.application_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lb_sg.id]
   }
 
   egress {
@@ -49,53 +33,3 @@ resource "aws_security_group" "application_sg" {
   }
 }
 
-
-resource "aws_instance" "web_app_instance" {
-  ami                         = var.custom_ami_id
-  instance_type               = var.instance_type
-  vpc_security_group_ids      = [aws_security_group.application_sg.id]
-  subnet_id                   = aws_subnet.public_subnet[0].id
-  associate_public_ip_address = true
-  key_name                    = var.key_name
-  iam_instance_profile        = aws_iam_instance_profile.ec2_role_profile.name
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = 25
-    delete_on_termination = true
-  }
-
-  disable_api_termination = false
-
-  user_data = <<-EOF
-              #!/bin/bash
-              # Write environment variables to /etc/environment
-              echo "DB_USERNAME='csye6225'" >> /etc/environment
-              echo "DB_PASSWORD='${var.db_password}'" >> /etc/environment
-              echo "DB_HOST='${aws_db_instance.rds_instance.address}'" >> /etc/environment
-              echo "DB_PORT='3306'" >> /etc/environment
-              echo "DB_NAME='test'" >> /etc/environment
-              echo "S3_BUCKET_NAME='${aws_s3_bucket.file_upload_bucket.bucket}'" >> /etc/environment
-
-              echo "ROUTE_NAME='${var.route_name}'" >> /etc/environment
-
-              echo "SENDGRID_API_KEY='${var.email_key}'" >> /etc/environment
-
-              # Source the environment variables
-              source /etc/environment
-
-              # Start your application (modify to fit your application start command)
-              sudo systemctl start app.service
-
-              sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent-config.json -s
-
-              # Start CloudWatch Agent
-              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
-
-              EOF
-
-
-  tags = {
-    Name = "WebAppInstance"
-  }
-}

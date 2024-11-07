@@ -1,10 +1,8 @@
-# Generate a unique name for the S3 bucket
 resource "random_uuid" "s3_bucket_name" {}
 
 resource "aws_s3_bucket" "file_upload_bucket" {
   bucket = random_uuid.s3_bucket_name.result
 
-  # Enforce bucket deletion even if not empty
   force_destroy = true
 
   tags = {

@@ -11,4 +11,3 @@ locals {
 data "aws_availability_zones" "available" {
   state = "available" # Filter to only include currently available zones
 }
-
