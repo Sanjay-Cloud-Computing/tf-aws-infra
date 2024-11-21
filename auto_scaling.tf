@@ -40,9 +40,9 @@
 # }
 
 resource "aws_autoscaling_group" "web_app_asg" {
-  desired_capacity = 1 # Start with 3 instances
-  max_size         = 1 # Allow scaling up to 5 instances
-  min_size         = 1 # Ensure a minimum of 3 instances
+  desired_capacity = 3 # Start with 3 instances
+  max_size         = 5 # Allow scaling up to 5 instances
+  min_size         = 3 # Ensure a minimum of 3 instances
   launch_template {
     id      = aws_launch_template.web_app_launch_template.id
     version = "$Latest"
