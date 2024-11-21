@@ -39,6 +39,14 @@ resource "aws_iam_policy" "ec2_policy" {
         ]
         Resource = "*"
       }
+      ,
+      {
+        Effect = "Allow"
+        Action = [
+          "sns:Publish"
+        ]
+        Resource = "*"
+      }
     ]
   })
 }
