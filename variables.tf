@@ -83,3 +83,13 @@ variable "email_key" {
   description = "api key"
 
 }
+
+variable "base_url" {
+  type        = string
+  description = "base url"
+}
+
+variable "email_from" {
+  type        = string
+  description = "email from"
+}
