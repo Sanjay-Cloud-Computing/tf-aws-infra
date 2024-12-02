@@ -28,12 +28,12 @@
 #               # Source the environment variables
 #               source /etc/environment
 
-#               # Start your application (modify to fit your application start command)
-#               sudo systemctl start app.service
+# # Start your application (modify to fit your application start command)
+# sudo systemctl start app.service
 
-#               # Configure and start CloudWatch Agent
-#               sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent-config.json -s
-#               /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
+# # Configure and start CloudWatch Agent
+# sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent-config.json -s
+# /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
 # EOF
 #   )
 

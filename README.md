@@ -103,3 +103,11 @@ terraform destroy -var-file="terraform.tfvars"
 ```
 
 Type `yes` to confirm and start the deletion process
+
+3.**Import Certificate using awscli**
+
+sudo aws acm import-certificate \
+    --certificate fileb:///Users/sanjay/Documents/Cloud/a09/demo_cloudsan_me/demo_cloudsan_me.crt \
+    --certificate-chain fileb:///Users/sanjay/Documents/Cloud/a09/demo_cloudsan_me/demo_cloudsan_me.ca-bundle \
+    --private-key fileb:///Users/sanjay/Documents/Cloud/a09/private.key \
+    --profile demo
