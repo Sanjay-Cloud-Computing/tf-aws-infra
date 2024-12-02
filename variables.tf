@@ -1,7 +1,7 @@
 variable "region" {
   description = "The AWS region where resources will be created"
   type        = string
-  # default     = "us-west-1"
+  default     = "us-east-1"
 }
 
 variable "vpc_cidr_base" {
@@ -67,11 +67,12 @@ variable "db_port" {
   default     = 3306
 }
 
-variable "db_password" {
-  description = "Password for the master user of the RDS instance"
-  type        = string
-  sensitive   = true
-}
+# variable "db_password" {
+#   description = "Password for the master user of the RDS instance"
+#   type        = string
+#   sensitive   = true
+#   default     = random_password.db_password.result
+# }
 
 variable "route_name" {
   description = "Route Name"

@@ -41,13 +41,15 @@ resource "aws_db_instance" "rds_instance" {
   engine                 = "mariadb"
   engine_version         = "10.6"
   username               = "csye6225"
-  password               = var.db_password
+  password               = random_password.db_password.result
   parameter_group_name   = aws_db_parameter_group.rds_parameter_group.name
   vpc_security_group_ids = [aws_security_group.db_security_group.id, ]
   multi_az               = false
   publicly_accessible    = false
   skip_final_snapshot    = true
   db_name                = "csye6225"
+  storage_encrypted      = true
+  kms_key_id             = aws_kms_key.rds_key.arn
 
   tags = {
     Name = "RDSInstance"

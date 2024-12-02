@@ -40,6 +40,22 @@ resource "aws_iam_policy" "lambda_policy" {
         Resource = "*"
       },
       {
+        Effect   = "Allow"
+        Action   = "secretsmanager:GetSecretValue"
+        Resource = "*"
+      },
+      {
+        "Sid" : "AllowLambdaAccess",
+        "Effect" : "Allow",
+        "Action" : [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        "Resource" : "*"
+      },
+      {
         Effect = "Allow",
         Action = [
           "rds-db:connect"
@@ -68,9 +84,10 @@ resource "aws_lambda_function" "email_verification_function" {
   environment {
     variables = {
 
-      SENDGRID_API_KEY = var.email_key
-      BASE_URL         = var.base_url
-      EMAIL_FROM       = var.email_from
+      # SENDGRID_API_KEY = var.email_key
+      EMAIL_SECRET_NAME = aws_secretsmanager_secret.email_service_secret.name
+      BASE_URL          = var.base_url
+      EMAIL_FROM        = var.email_from
     }
   }
 
